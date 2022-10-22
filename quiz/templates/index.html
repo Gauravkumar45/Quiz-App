@@ -1,0 +1,111 @@
+<html>
+<head>
+    <title>Simple Quiz App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    <script>
+    $(document).ready(function(){
+    $("#b1").click(function(){
+        $(".rb").show();
+        $(".rb").attr("disabled",true);
+
+
+    });
+    });
+
+
+        function getanswers()
+        {
+        document.getElementById("UserAnswers").innerHTML = "";
+        var e = document.getElementsByTagName("input");
+            for(i = 0 ; i<=e.length;i++)
+            {
+                if(e[i].type=="radio")
+                {
+                    if(e[i].checked)
+                    {
+                        document.getElementById("UserAnswers").innerHTML+="Q "+e[i].name + " The Answers You Are Selected Is : "+e[i].value+"<br>";
+
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    {% load static %}
+ 
+<style>
+  .greet{
+    font-size: 18px;
+    color: #fff;
+    margin-right: 20px;
+  }
+</style>
+ 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+ 
+    <ul class="navbar-nav">
+      
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
+      </li>
+      <li class="nav-item active">
+        
+      {% if request.user.is_staff %}
+      </li>
+      <li class="nav-item active">
+        <button class="btn btn-outline-success" type="submit"><a class="nav-link" href="{% url 'addquestion' %}">Add Question</a></button>
+      </li>
+      {% endif %} 
+      
+  </div>
+ 
+  <span class="greet">Hello, {{request.user}}</span>
+  <button class="btn btn-outline-success" type="submit"><span ><a  class="greet" href="{% url 'signout' %}">SignOut</a></span></button>
+</nav>
+<div class="container">
+    <div>
+        {% for i in  queryset %}
+        <table>
+            <tr>
+                <td class="text-primary">{{i.id}} ) {{i.ques}} </td>
+            </tr>
+            <tr>
+                <td><input type = "radio" class="rb" name = {{i.id}} id="op1" value="{{i.op1}}">{{i.op1}}</td>
+            </tr>
+            <tr>
+                <td><input type = "radio" class="rb" name = {{i.id}} id="op2" value="{{i.op2}}">{{i.op2}}</td>
+            </tr>
+            <tr>
+                <td><input type = "radio" class="rb" name = {{i.id}} id="op3" value="{{i.op3}}">{{i.op3}}</td>
+            </tr>
+            <tr>
+                <td><input type = "radio" class="rb" name = {{i.id}} id="op4" value="{{i.op4}}">{{i.op4}}</td>
+            </tr>
+
+            <tr>
+                <td><label id="corans" class= "rb" style="display:none ; color : green"><b>{{i.ans}}</b></label></td>
+            </tr>
+
+        </table>
+<hr>
+
+        {% endfor %}
+        <input type="submit" class="btn btn-success" value="Submit" id="b1" onclick="getanswers()">
+        <br>
+        <b id="UserAnswers"></b>
+        </div>
+</div>
+</body>
+</html>
